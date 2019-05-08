@@ -1,0 +1,25 @@
+# run docker-compose up -d to build container
+version: '3'
+services:
+  prisma:
+    image: prismagraphql/prisma:1.29
+    restart: always
+    ports:
+    - "4466:4466"
+    environment:
+      PRISMA_CONFIG: |
+        port: 4466
+        # uncomment the next line and provide the env var PRISMA_MANAGEMENT_API_SECRET=my-secret to activate cluster security
+        # managementApiSecret: my-secret
+        databases:
+          default:
+            connector: postgres
+            host: ec2-54-75-230-253.eu-west-1.compute.amazonaws.com
+            database: ddpsn0k4jo5ika
+            user: owjlhkhcamqnsv
+            password: 53f6aa470625797f1d5f7290bfc40d13cc9f5f8cbfabd7e025a99a4b405489b7
+            rawAccess: true
+            port: '5432'
+            migrations: true
+            # ssl tag needs to be added in order to connect to Heroku
+            ssl: true
