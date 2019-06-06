@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 
 /**
  * Get User ID via JSON Web token user authentication
- * @param {Objecy} request 
+ * @param {Object} request 
  * @param {Boolean} requiresAuth 
  */
 export const getUserId = (request, requiresAuth = true) => {
@@ -26,7 +26,7 @@ export const getUserId = (request, requiresAuth = true) => {
 export const getJwt = (userId, expiresIn) => jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn })
 
 /**
- * Generate hashed password
+ * Generate hashed password and check if password is valid (at least 8 chars long)
  * @param {String} plainTextPassword 
  */
 export const hashPassword = (plainTextPassword) => {

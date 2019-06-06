@@ -98,7 +98,7 @@ const Mutation = {
    },
    async updatePost(parent, {id, title, body, published}, { prisma, request }, info) {
       const userId = getUserId(request)
-
+   
       const doesPostExist = await prisma.exists.Post({
          id: id,
          author: {
