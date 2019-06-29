@@ -6,7 +6,7 @@ import { createUser, loginUser, getUsers } from './utils/operations'
 
 const client = getClient()
 
-beforeEach(seedDatabase)
+beforeEach(seedDatabase, 20000)
 
 describe('Users test suite', () => {
     test('Should create a new user', async () => {
@@ -28,7 +28,7 @@ describe('Users test suite', () => {
     test('Should expose public author profiles', async () => {
         const response = await client.query({ query: getUsers })
     
-        expect(response.data.users.length).toBe(1)
+        expect(response.data.users.length).toBe(2)
         expect(response.data.users[0].email).toBe(null)
         expect(response.data.users[0].name).toBe('Joe')
     })
@@ -41,7 +41,7 @@ describe('Users test suite', () => {
                 mutation: loginUser,
                 variables: {
                     data: {
-                        email: "joe@test.org",
+                        email: "mike@test.org",
                         password: wrongPwd
                     }
                 }

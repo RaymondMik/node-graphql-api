@@ -75,3 +75,22 @@ export const deletePost = gql`
         }
     }
 `
+
+export const createComment = gql`
+    mutation ($data: CreateCommentInput!) {
+        createComment(data: $data) {
+            text
+            post {
+                id
+            }
+        }
+    }
+`
+
+export const deleteComment = gql`
+    mutation ($id: ID!) {
+        deleteComment(id: $id) {
+            id
+        }
+    }
+`

@@ -7,7 +7,7 @@ import { getPosts, updatePost, createPost, deletePost } from './utils/operations
 
 const client = getClient()
 
-beforeEach(seedDatabase)
+beforeEach(seedDatabase, 20000)
 
 describe('Posts test suite', () => {
     test('Should expose the only post that is public', async () => {
