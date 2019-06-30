@@ -1,8 +1,12 @@
 import '@babel/polyfill';
 import 'cross-fetch/polyfill'
 import prisma from '../src/prisma';
-import { seedDatabase, getClient, UserOne, PostTwo, CommentOne, CommentTwo } from './utils/seedDatabase'
-import { createComment, deleteComment } from './utils/operations'
+import { seedDatabase, UserOne, PostTwo, CommentOne, CommentTwo } from './utils/seedDatabase'
+import getClient from './utils/getClient'
+import { createComment, deleteComment, subscribeToComments, subscribeToPosts } from './utils/operations'
+import { doesNotReject } from 'assert';
+
+const client = getClient()
 
 beforeEach(seedDatabase, 20000)
 
@@ -49,5 +53,27 @@ describe('Comments test suite', () => {
                }
          })
       ).rejects.toThrow()
+   })
+
+   test('Should subscribe to comments for a post', async (done) => {
+      client.subscribe({ query: subscribeToComments, variables: {postId: PostTwo.data.id} }).subscribe({
+          next(response) {
+              expect(response.data.comment.mutation).toBe('DELETED')
+              done()
+          }
+      })
+  
+      await prisma.mutation.deleteComment({ where: { id: CommentOne.data.id }})
+  })
+
+  test('Should subscribe to changes for a published post', async (done) => {
+      client.subscribe({ query: subscribeToPosts }).subscribe({
+         next(response) {
+            expect(response.data.post.mutation).toBe('DELETED')
+            done()
+         }
+      })
+
+      await prisma.mutation.deletePost({ where: { id: PostTwo.data.id }})
    })
 });
